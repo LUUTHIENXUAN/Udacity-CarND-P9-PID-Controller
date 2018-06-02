@@ -31,14 +31,14 @@ void PID::Init(double Kp, double Ki, double Kd) {
   twiddle_completed  = false;
 
 	// Set size params & dparams for Twiddle
-	int n_params = 3;
+	int n_params = 5;
   dparams.resize(n_params);
   params.resize(n_params);
 
   // Initialize params & dparams variable.
-	dparams[0]  = 0.001;
-	dparams[1]  = 0.000000001;
-	dparams[2]  = 1.1;
+	dparams[0]  = 0.01;
+	dparams[1]  = 0.001;
+	dparams[2]  = 1.0;
 
 	params[0]  = Kp;
 	params[1]  = Ki;
@@ -61,10 +61,6 @@ void PID::UpdateError(double cte) {
 }
 
 double PID::TotalError() {
-
-  std::cout << "Kp, Ki, Kd: " << Kp << ", "
-	                            << Ki << ", "
-															<< Kd << std::endl;
 
 	return -Kp*p_error - Ki*i_error - Kd*d_error;
 }
@@ -160,5 +156,10 @@ void PID::twiddle(double tol, double err){
 	Kp = params[0];
 	Ki = params[1];
 	Kd = params[2];
+
+	std::cout << " Twiddle Kp, Ki, Kd: " << Kp << ", "
+	                                     << Ki << ", "
+															         << Kd << std::endl;
+
 
 }

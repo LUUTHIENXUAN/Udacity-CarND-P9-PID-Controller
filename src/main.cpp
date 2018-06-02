@@ -35,16 +35,10 @@ int main(int argc, char *argv[])
   PID pid; // pid for steering angle
   // TODO: Initialize the pid variable.
   std::cout << "Initializing PID for steering angle..." << std::endl;
-  // NOTE: preference_speed
-  ///* 50 ~ 60: 0.15  0.0 0.55
-  ///* 60     : 0.12  0.0 0.60
-  ///* 70     : 0.04 0.0 0.90
-  ///* 80     : 0.045 0.0 1.01
-  ///* 80     : 0.0455 0.0 1.02
 
-  double init_Kp = 0.0460; //-0.25 atof(argv[1])
-  double init_Ki = 0.0; // 0 atof(argv[2])
-  double init_Kd = 1.05; //-0.75 atof(argv[3])
+  double init_Kp = 0.15; // atof(argv[1])
+  double init_Ki = 0.0;  // atof(argv[2])
+  double init_Kd = 0.75; // atof(argv[3])
   pid.Init(init_Kp, init_Ki, init_Kd);
   // Twiddle
   int current_time_step = 0; //current_time_step
@@ -52,7 +46,8 @@ int main(int argc, char *argv[])
   PID pids; // pid for speed
   std::cout << "Initializing PID for speed..." << std::endl;
   pids.Init(0.1, 0, 0);
-  const double preference_speed = 70.0;
+
+  const double preference_speed = 200.0;
 
   h.onMessage([&pid, &current_time_step, &pids, &preference_speed]
               (uWS::WebSocket<uWS::SERVER> ws, char *data,
@@ -95,19 +90,18 @@ int main(int argc, char *argv[])
             pid.twiddle(0.01, final_err);
 
           }
-
-          if (pid.twiddle_completed){
-
-            pids.UpdateError(speed - preference_speed - 10);
-            throttle_value = pids.TotalError();
-
-          }
-          else{
-            pids.UpdateError(speed - preference_speed);
-            throttle_value = pids.TotalError();
-
-          }
-
+          //assume that preference_cte and preference_angle as 0;
+          double total_cost = 0;
+          total_cost       += speed - preference_speed; //dealing with stopping
+          total_cost       += 0.001 *(steer_value - angle)
+                                    *(steer_value - angle)
+                                    *speed;
+          //total_cost       += 0.5 * abs(cte)*abs(cte);
+          total_cost       += 0.001 * error*speed;
+          total_cost       += 0.05  * abs(angle)*abs(angle)*speed;
+          total_cost       += 0.001 * abs(angle)*abs(cte)*speed;
+          pids.UpdateError(total_cost);
+          throttle_value = pids.TotalError();
 
           if (throttle_value >  1) throttle_value =  1;
           if (throttle_value < -1) throttle_value = -1;

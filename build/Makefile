@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/udacity/Term2/CarND-PID-Control-Project
+CMAKE_SOURCE_DIR = /home/udacity/Udacity-CarND-P9-PID-Controller
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/udacity/Term2/CarND-PID-Control-Project/build
+CMAKE_BINARY_DIR = /home/udacity/Udacity-CarND-P9-PID-Controller/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/udacity/Term2/CarND-PID-Control-Project/build/CMakeFiles /home/udacity/Term2/CarND-PID-Control-Project/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/udacity/Udacity-CarND-P9-PID-Controller/build/CMakeFiles /home/udacity/Udacity-CarND-P9-PID-Controller/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/udacity/Term2/CarND-PID-Control-Project/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/udacity/Udacity-CarND-P9-PID-Controller/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -184,8 +184,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... rebuild_cache"
 	@echo "... pid"
+	@echo "... rebuild_cache"
 	@echo "... src/PID.o"
 	@echo "... src/PID.i"
 	@echo "... src/PID.s"

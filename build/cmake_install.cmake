@@ -1,4 +1,4 @@
-# Install script for directory: /home/udacity/Term2/CarND-PID-Control-Project
+# Install script for directory: /home/udacity/Udacity-CarND-P9-PID-Controller
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/udacity/Term2/CarND-PID-Control-Project/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/udacity/Udacity-CarND-P9-PID-Controller/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
