@@ -23,7 +23,7 @@ PID(Proportional-Integral-Derivative) controllers implemented in C++ to maneuver
 #### Results:
 A video of the simulated car driving around the track:
 
-Youtube video recorded at 100 (mph). Click to view!
+Youtube video recorded at 65 (mph). Click to view!
 <div align="center">
   <a href="https://www.youtube.com/watch?v=U9JQCG4BG0U"><img src="https://img.youtube.com/vi/U9JQCG4BG0U/0.jpg" alt="100(mph)"></a>
 </div>
