@@ -4,7 +4,6 @@
 PID(Proportional-Integral-Derivative) controllers implemented in C++ to maneuver the vehicle around the track. This project was done in the following steps:
 
 + Implement PID Controller for Steering
-+ Implement PID Controller for Speed
 + Optimize for each PID coefficient parameters for Steering by `twiddle` as follow:
   *  Get the average error (CTE) in 3(by default) steps in `run`.
   *  Feed this error to `twiddle` to adjust the PID coefficient
@@ -14,28 +13,37 @@ PID(Proportional-Integral-Derivative) controllers implemented in C++ to maneuver
 
 >*I believe this approach is more practical for real vehicle and more beneficial if you already have your own PID coefficient.*
 
++ Implement PID Controller for Speed
+  + Set up `reference_speed` to keep the car reach that speed
+  + Set up cost function to control speed over `CTE`, vehicle 's current `angle`, next `steering_angle` so that the vehicle could slow down at tight turns, oscillations and overshooting  
+
 ## 2. Results & Discussion
+
 
 #### Results:
 A video of the simulated car driving around the track:
 
+Youtube video recorded at 100 (mph). Click to view!
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=U9JQCG4BG0U"><img src="https://img.youtube.com/vi/U9JQCG4BG0U/0.jpg" alt="100(mph)"></a>
+</div>
 
 #### Discussion:
 In the end, implementation of code for a basic PID controller is fairly straightforward, and `twiddle` is like a magic for tunning parameters. Here is what I leaned from "PID" for stearing:
 
-1.  `P(proportional)` component: the car will steer to the cross-track error, or CTE which how far the car away from the preference path in the road. The higher CTE then the higher steering angle should be taken into.
+1.  `P(proportional)` component: the car will steer to the cross-track error, or CTE which how far the car away from the reference path in the road. The higher CTE then the higher steering angle should be taken into.
 
  - If this coefficient is set **too high**, the car will constantly overcorrect and overshoot the middle.
 
  - If this coefficient is set **too low**, the car will react slowly to heavy curves or high CTE.
 
-2. `I(integral)` component:  sums up all CTEs up to that point. In case the car is one side of the preference path for the whole time, this component will encourage the car to turn back toward the preference path. In fact, this component should be small enough to prevent the affect of accumulation of CTE.
+2. `I(integral)` component:  sums up all CTEs up to that point. In case the car is one side of the reference path for the whole time, this component will encourage the car to turn back toward the reference path. In fact, this component should be small enough to prevent the affect of accumulation of CTE.
 
  - If this coefficient is set **too high**, the car tends to have quick oscillations.
 
- - If this coefficient is set **too low**, the car may stay in one side of the preference path for long periods of time.
+ - If this coefficient is set **too low**, the car may stay in one side of the reference path for long periods of time.
 
-3. `D(derivate)` component:  change in CTE from current value to the previous one. This component helps the car more stable in terms of  curve and moving outward the preference path (like zigzag) , because it would contribute higher steering angle to make the car comming back faster to preference path.
+3. `D(derivate)` component:  change in CTE from current value to the previous one. This component helps the car more stable in terms of  curve and moving outward the reference path (like zigzag) , because it would contribute higher steering angle to make the car comming back faster to reference path.
 
  - If this coefficient is set **too high**, the car may steer in large angle.
 
@@ -44,9 +52,9 @@ In the end, implementation of code for a basic PID controller is fairly straight
 4. Set up `twiddle`:
 
  Although I have used `twiddle` for optimisation, the car needs to run stable in a few first frames. This requires a "so-so"(or good) initialization of PID coefficient parameters.
- This setup also depends on car's speed ofcourse. I have used PID for Speed but just for keeping the car up to the preference speed. This is a real challenge for `twiddle` for adjusting coefficient in case of high speed because the car will reach the preference speed soon.
+ This setup also depends on car's speed ofcourse. I have used PID for Speed but just for keeping the car up to the reference speed. This is a real challenge for `twiddle` for adjusting coefficient in case of high speed because the car will reach the reference speed soon.
 
- Below is `run`code and `twiddle` code used in this project. 
+ Below is `run`code and `twiddle` code used in this project.
 
 
 ```C++
